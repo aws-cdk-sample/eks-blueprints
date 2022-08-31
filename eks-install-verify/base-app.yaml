@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: poc
+spec:
+  finalizers:
+    - kubernetes
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ng
+  namespace: poc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ng
+  template:
+    metadata:
+      labels:
+        app: ng
+    spec:
+      containers:
+      - name: ng
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ng
+  namespace: poc
+spec:
+  ports:
+    - name: http-ng
+      port: 80
+      protocol: TCP
+  selector:
+    app: ng
+
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: ng
+#   namespace: poc
+#   annotations:
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+# spec:
+#   type: LoadBalancer
+#   ports:
+#     - name: http-ng
+#       port: 9010
+#       targetPort: 80
+#       protocol: TCP
+#   selector:
+#     app: ng

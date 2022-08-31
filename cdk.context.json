@@ -1,0 +1,41 @@
+{
+  "dev": {
+    "accountId": "0123456789abcdef",
+    "region": "us-east-2",
+    "env": "dev",
+    "appName": "TravelBudddy",
+    "k8sVersion": "1.23",
+    "awsLoadBalancerController": {
+      "enabled": true,
+      "props": {
+        "enableWaf": false
+      }
+    },
+    "ebsCsiDriver": {
+      "enabled": true
+    },
+    "ec2SSHKey": "ec2login",
+    "iamUser": "wellxie"
+  },
+  "prod": {
+    "accountId": "0123456789abcdef",
+    "region": "us-east-2",
+    "env": "prod",
+    "appName": "TravelBudddy-prod",
+    "k8sVersion": "1.23",
+    "customVpc": {
+      "vpcId": "vpc-005aaef69f74474c5"
+    },
+    "awsLoadBalancerController": {
+      "enabled": true,
+      "props": {
+        "enableWaf": false
+      }
+    },
+    "ebsCsiDriver": {
+      "enabled": true
+    },
+    "ec2SSHKey": "ec2login",
+    "iamUser": "wellxie"
+  }
+}
