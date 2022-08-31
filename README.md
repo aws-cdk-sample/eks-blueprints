@@ -50,7 +50,7 @@ cdk destroy -c env=<your-config>
 
 ### VPC
 
-可以使用已经存在的 VPC，配置 `customVpc` 节点，指定 `vpcId`。
+可以使用已经存在的 VPC，配置 `customVpc` 节点，指定 `vpcId`。不配置 `customVpc` 会创建新的 VPC(10.0.0.0/16) 和子网。
 
 如果使用已有 VPC，必须创建 public subnet 和 private subnet，并满足如下条件：
 
