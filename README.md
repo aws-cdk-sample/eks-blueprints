@@ -54,8 +54,8 @@ cdk destroy -c env=<your-config>
 
 如果使用已有 VPC，必须创建 public subnet 和 private subnet，并满足如下条件：
 
-> - 给私有公网添加标签 `aws-cdk:subnet-type=Public, kubernetes.io/role/elb=1`
-> - 给私有私网添加标签 `aws-cdk:subnet-type=Private, kubernetes.io/role/internal-elb=1`
+> - 给公有子网添加标签 `aws-cdk:subnet-type=Public, kubernetes.io/role/elb=1`
+> - 给私有子网添加标签 `aws-cdk:subnet-type=Private, kubernetes.io/role/internal-elb=1`
 > - 私有子网需要添加 NAT 网关（安装 helm 插件需要外网）
 > - 调试过程中，会在 `cdk.context.json` 中产生cache，错误修正后，请删除 cache 节点 (类似 `vpc-provider:account=01234:filter.vpc-id=vpc-xxxx:region=us-east-2:returnAsymmetricSubnets=true`)。
 
@@ -92,4 +92,10 @@ kubectl apply -f ./eks-install-verify/base-app.yaml
 
 ```shell
 kubectl apply -f ./eks-install-verify/ingress-pub.yaml
+```
+
+### 清理资源
+
+```shell
+kubectl delete ns poc
 ```
