@@ -1,9 +1,9 @@
 {
   "dev": {
     "accountId": "320236118172",
-    "region": "us-east-2",
+    "region": "us-east-1",
     "env": "dev",
-    "appName": "TravelBudddy",
+    "appName": "devcake",
     "k8sVersion": "1.23",
     "awsLoadBalancerController": {
       "enabled": true,
@@ -11,10 +11,53 @@
         "enableWaf": false
       }
     },
+    "karpenter": {
+      "enabled": false,
+      "props": {
+        "requirements": [
+          {
+            "key": "node.kubernetes.io/instance-type",
+            "op": "In",
+            "vals": [
+              "m6g.large"
+            ]
+          },
+          {
+            "key": "topology.kubernetes.io/zone",
+            "op": "In",
+            "vals": [
+              "us-east-1"
+            ]
+          }
+        ],
+        "subnetTags": {},
+        "amiFamily": "BOTTLEROCKET_ARM_64",
+        "consolidation": {
+          "enabled": true
+        },
+        "weight": 20
+      }
+    },
+    "awsForFluentBit": {
+      "enabled": false,
+      "props": {
+        "values": {
+          "cloudWatch": {
+            "enabled": true,
+            "region": "us-east-1",
+            "logGroupName": "DevCake"
+          }
+        }
+      }
+    },
     "ebsCsiDriver": {
       "enabled": true
     },
-    "ec2SSHKey": "ec2login",
+    "metricsServer": {
+      "enabled": true,
+      "version": "v0.5.0"
+    },
+    "ec2SSHKey": "wellxie",
     "iamUser": "wellxie"
   },
   "prod": {
@@ -38,47 +81,61 @@
     "ec2SSHKey": "ec2login",
     "iamUser": "wellxie"
   },
-  "vpc-provider:account=320236118172:filter.vpc-id=vpc-005aaef69f74474c5:region=us-east-2:returnAsymmetricSubnets=true": {
-    "vpcId": "vpc-005aaef69f74474c5",
-    "vpcCidrBlock": "192.168.0.0/16",
-    "availabilityZones": [],
-    "subnetGroups": [
-      {
-        "name": "Public",
-        "type": "Public",
-        "subnets": [
-          {
-            "subnetId": "subnet-09a7d074233e5156d",
-            "cidr": "192.168.0.0/20",
-            "availabilityZone": "us-east-2a",
-            "routeTableId": "rtb-0bf120acfc7584908"
-          },
-          {
-            "subnetId": "subnet-0958634173a5c11af",
-            "cidr": "192.168.16.0/20",
-            "availabilityZone": "us-east-2b",
-            "routeTableId": "rtb-0bf120acfc7584908"
-          }
-        ]
-      },
-      {
-        "name": "Private",
-        "type": "Private",
-        "subnets": [
-          {
-            "subnetId": "subnet-0dd2eca9f855e3cdc",
-            "cidr": "192.168.32.0/20",
-            "availabilityZone": "us-east-2a",
-            "routeTableId": "rtb-08ee9c572566376b4"
-          },
-          {
-            "subnetId": "subnet-0f30b163bb389cc74",
-            "cidr": "192.168.64.0/20",
-            "availabilityZone": "us-east-2b",
-            "routeTableId": "rtb-08ee9c572566376b4"
-          }
-        ]
+  "us2": {
+    "accountId": "320236118172",
+    "region": "us-east-2",
+    "env": "us2",
+    "appName": "US2",
+    "k8sVersion": "1.23",
+    "awsLoadBalancerController": {
+      "enabled": true,
+      "props": {
+        "enableWaf": false
       }
-    ]
-  }
+    },
+    "ebsCsiDriver": {
+      "enabled": true
+    },
+    "ec2SSHKey": "ec2login",
+    "iamUser": "wellxie"
+  },
+  "china": {
+    "accountId": "733364334798",
+    "region": "cn-north-1",
+    "env": "dev",
+    "appName": "app-dev",
+    "k8sVersion": "1.23",
+    "ec2SSHKey": "ec2",
+    "iamUser": "wellxie",
+    "mainInstanceTypes": [
+      "c6g.large",
+      "c6g.medium"
+    ],
+    "awsLoadBalancerController": {
+      "enabled": true,
+      "props": {
+        "enableWaf": false
+      }
+    },
+    "ebsCsiDriver": {
+      "enabled": true
+    }
+  },
+  "availability-zones:account=733364334798:region=cn-north-1": [
+    "cn-north-1a",
+    "cn-north-1b"
+  ],
+  "availability-zones:account=320236118172:region=us-east-2": [
+    "us-east-2a",
+    "us-east-2b",
+    "us-east-2c"
+  ],
+  "availability-zones:account=320236118172:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ]
 }

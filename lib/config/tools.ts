@@ -30,6 +30,10 @@ cdk -c env=dev ...
     awsLoadBalancerController: config["awsLoadBalancerController"],
     ebsCsiDriver: config["ebsCsiDriver"],
     customVpc: config["customVpc"],
+    mainInstanceTypes: config["mainInstanceTypes"],
+    karpenter: config["karpenter"],
+    awsForFluentBit: config["awsForFluentBit"],
+    metricsServer: config["metricsServer"],
   }
 
 }

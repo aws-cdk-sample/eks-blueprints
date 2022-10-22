@@ -12,9 +12,15 @@ export interface Config {
 
   readonly customVpc?: any;
 
+  readonly mainInstanceTypes?: string[];
   readonly ebsCsiDriver?: any;
 
   // https://aws-quickstart.github.io/cdk-eks-blueprints/api/interfaces/addons.AwsLoadBalancerControllerProps.html
   readonly awsLoadBalancerController?: any;
+  readonly karpenter?: any;
+
+  readonly awsForFluentBit?: any;
+  readonly metricsServer?: any;
+
 
 }

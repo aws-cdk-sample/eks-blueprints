@@ -11,7 +11,6 @@ import { ExistingVpcProvider } from '../lib/resources/ExistingVpcProvider';
 
 
 
-
 const app = new App();
 const cfg = getConfig(app);
 Tags.of(app).add("App", cfg.appName);
@@ -31,16 +30,24 @@ if (cfg.customVpc && cfg.customVpc.vpcId && cfg.region) {
     bp.resourceProvider(GlobalResources.Vpc, new ExistingVpcProvider(cfg.region, cfg.customVpc.vpcId));
 }
 
+let instanceTypes: InstanceType[] = new Array<InstanceType>();
+if (cfg.mainInstanceTypes) {
+    cfg.mainInstanceTypes.forEach(instanceType => instanceTypes.push(new InstanceType(instanceType)));
+}
+if (instanceTypes.length == 0) {
+    instanceTypes.push(new InstanceType("c6g.large"));
+}
+
 const clusterProvider = new blueprints.GenericClusterProvider({
     version: KubernetesVersion.of(cfg.k8sVersion),
     // vpc: props.vpc,
     managedNodeGroups: [
         {
-            id: "system",
+            id: "mainNG",
             amiType: NodegroupAmiType.BOTTLEROCKET_ARM_64,
-            instanceTypes: [new InstanceType("c7g.large")],
+            instanceTypes,
             diskSize: 50,
-            minSize: 2,
+            minSize: 20,
             maxSize: 100,
             remoteAccess: cfg.ec2SSHKey ? {
                 sshKeyName: cfg.ec2SSHKey
@@ -63,6 +70,17 @@ if (cfg.ebsCsiDriver && cfg.ebsCsiDriver.enabled) {
     addOns.push(new blueprints.addons.EbsCsiDriverAddOn());
 }
 
+if (cfg.karpenter && cfg.karpenter.enabled) {
+    addOns.push(new blueprints.addons.KarpenterAddOn(cfg.karpenter.props));
+}
+
+if (cfg.awsForFluentBit && cfg.awsForFluentBit.enabled) {
+    addOns.push(new blueprints.addons.AwsForFluentBitAddOn(cfg.awsForFluentBit.props));
+}
+
+if (cfg.metricsServer && cfg.metricsServer.enabled) {
+    addOns.push(new blueprints.addons.MetricsServerAddOn(cfg.awsForFluentBit.version));
+}
 bp.resourceProvider("adminUser", new IAMUserProvider(cfg))
     .clusterProvider(clusterProvider)
     .account(cfg.accountId)
