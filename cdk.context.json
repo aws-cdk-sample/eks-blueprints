@@ -39,7 +39,7 @@
       }
     },
     "awsForFluentBit": {
-      "enabled": false,
+      "enabled": true,
       "props": {
         "values": {
           "cloudWatch": {
@@ -51,7 +51,7 @@
       }
     },
     "ebsCsiDriver": {
-      "enabled": true
+      "enabled": false
     },
     "metricsServer": {
       "enabled": true,
@@ -121,15 +121,6 @@
       "enabled": true
     }
   },
-  "availability-zones:account=733364334798:region=cn-north-1": [
-    "cn-north-1a",
-    "cn-north-1b"
-  ],
-  "availability-zones:account=320236118172:region=us-east-2": [
-    "us-east-2a",
-    "us-east-2b",
-    "us-east-2c"
-  ],
   "availability-zones:account=320236118172:region=us-east-1": [
     "us-east-1a",
     "us-east-1b",

@@ -47,7 +47,7 @@ const clusterProvider = new blueprints.GenericClusterProvider({
             amiType: NodegroupAmiType.BOTTLEROCKET_ARM_64,
             instanceTypes,
             diskSize: 50,
-            minSize: 20,
+            minSize: 6,
             maxSize: 100,
             remoteAccess: cfg.ec2SSHKey ? {
                 sshKeyName: cfg.ec2SSHKey
@@ -88,12 +88,3 @@ bp.resourceProvider("adminUser", new IAMUserProvider(cfg))
     .addOns(...addOns)
     .addOns(new IAMMasterAddon(cfg))
     .build(app, cfg.appName);
-
-
-
-// new EksAddonsStack(app, 'EksAddonsStack', cfg, {
-//   env: {
-//     region: cfg["region"],
-//     account: cfg["accountId"],
-//   }
-// });
